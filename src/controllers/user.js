@@ -17,11 +17,11 @@ const registeruser = asynchandler( async (req,res) => {
 // return res
 
 
-const {fullname,email,username,password} = req.body      //get user details from frontend
+const {fullName,email,username,password} = req.body      //get user details from frontend
 console.log("email: ", email);
 
 
-if (fullname === ""){                                     //validation - not empty
+if (fullName === ""){                                     //validation - not empty
     throw new ApiError(400,"full name is required")  
 }
 if (email === ""){
@@ -30,7 +30,7 @@ if (email === ""){
 if (username === ""){
     throw new ApiError(400,"username is required")  
 }
-if (paswword === ""){
+if (password === ""){
     throw new ApiError(400,"password is required")  
 }
 
@@ -42,7 +42,7 @@ if (paswword === ""){
 
 
 //chek if user already exist  : username,email
-const existeduser = User.findOne({                   
+const existeduser = await User.findOne({                   
     $or: [{ username } , { email }]
 })
 
@@ -52,27 +52,28 @@ if(existeduser){
 
 
 //check for image,check for avtar
-const avtarlocalpath = req.files?.avtar[0]?.path;       
-const coverimagepath = req.files?.coverimage[0]?.path;
+const avatarlocalpath = req.files?.avatar?.[0]?.path;       
+const coverimagepath = req.files?.coverimage?.[0]?.path;
 
-if(!avtarlocalpath){
-    throw new ApiError(400, "avtar file is reqired")
+if(!avatarlocalpath){
+    throw new ApiError(400, "avatar file is required")
 }
 
 
-//upload them cloudinary and check avtar
-const avtar = await uploadoncloudinary(avtarlocalpath)   
-const coverimage = await uploadoncloudinary(coverimage)
 
-if(!avtar){
+//upload them cloudinary and check avtar
+const avatar = await uploadoncloudinary(avatarlocalpath)   
+const coverimage = await uploadoncloudinary(coverimagepath)
+
+if(!avatar){
     throw new ApiError(400, "avtar file is reqired")
 }
 
 
 // creat user object - create entry in db
 const user = await User.create({                                
-    fullname,
-    avtarr:avtar.url,
+    fullName,
+    avatar:avatar.url,
     coverimage:coverimage?.url || "",
     email,
     password,
@@ -96,13 +97,7 @@ return res.status(201).json(
     new ApiResponse(200,createduser,"user registerd sucessfully")
 )
 
-
-
-
 })
-
-
-
 
 // jyare url aave tyare aa mothod run thai
 
