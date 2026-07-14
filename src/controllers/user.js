@@ -3,6 +3,9 @@ import {ApiError}  from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
 import {uploadoncloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/apiResponse.js";
+// import {upload} from "../middleware/multer.middleware.js"
+// import  router from "../routes/user.routes.js"
+
 
 const registeruser = asynchandler( async (req,res) => {
 //get user details from frontend
@@ -15,7 +18,8 @@ const registeruser = asynchandler( async (req,res) => {
 //mongodf pase data aave atle te data pachho aape pan te password na aape and refresh token 
 //check for user cration 
 // return res
-
+// console.log(req.body);
+// console.log(req.files);
 
 const {fullName,email,username,password} = req.body      //get user details from frontend
 console.log("email: ", email);
@@ -53,17 +57,24 @@ if(existeduser){
 
 //check for image,check for avtar
 const avatarlocalpath = req.files?.avatar?.[0]?.path;       
-const coverimagepath = req.files?.coverimage?.[0]?.path;
+// const coverimagepath = req.files?.coverimage?.[0]?.path;
+
+let coverimagelocalpath;
+if (req.files && Array.isArray(req.files.coverimage) && req.files.coverimage.length >0 ){
+    coverimagelocalpath= req.files.coverimage[0].path
+}
+
 
 if(!avatarlocalpath){
-    throw new ApiError(400, "avatar file is required")
+throw new ApiError(400, "avatar file is required")
 }
 
 
 
 //upload them cloudinary and check avtar
-const avatar = await uploadoncloudinary(avatarlocalpath)   
-const coverimage = await uploadoncloudinary(coverimagepath)
+const avatar = await uploadoncloudinary(avatarlocalpath) 
+// console.log("Avatar =>", avatar)  
+const coverimage = await uploadoncloudinary(coverimagelocalpath)
 
 if(!avatar){
     throw new ApiError(400, "avtar file is reqired")
@@ -82,9 +93,7 @@ const user = await User.create({
 
 
 //remove password and refresh token field from response
-const createduser = await User.findById(user._id).select(   
-    "-password refreshToken"
-)
+const createduser = await User.findById(user._id).select("-password -refreshToken")
 
 if(!createduser){
     throw new ApiError(500, "something went wrong while registering the user")
@@ -94,7 +103,7 @@ if(!createduser){
 
 // return res
 return res.status(201).json(
-    new ApiResponse(200,createduser,"user registerd sucessfully")
+    new ApiResponse(201,createduser,"user registerd sucessfully")
 )
 
 })
