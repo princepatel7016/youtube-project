@@ -257,11 +257,10 @@ try {
         )
     )
     
-    })
-    
-} catch (error) {
+}catch (error) {
     throw new ApiError(401,erro?.message || "invalid refresh token")
-    
 }
+
+})
 
 export {registeruser , loginuser ,logoutuser , refreshaccesstoken}
