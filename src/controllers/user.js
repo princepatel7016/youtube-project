@@ -214,6 +214,8 @@ return res.status(200).clearCookie("accesstoken", options)
 })
 
 
+//Access Token expire ho gaya. tab ye api call hota he refreshaccesstoken
+//Frontend automatically ye API call karega.
 const refreshaccesstoken = asynchandler( async (req,res) => {
 const incommingrefreshtoken = req.cookies.refreshToken || req.body.refreshToken
 
@@ -241,7 +243,8 @@ try {
     
     const options = {
         httpOnly:true,
-        secure:true
+        //secure:true    //Cookie sirf HTTPS connection par hi browser bhejega.
+        secure: false
     }
     
     const {accesstoken, newrefreshToken} = await genrateaccessandrefreshtoken(user._id)
@@ -258,7 +261,7 @@ try {
     )
     
 }catch (error) {
-    throw new ApiError(401,erro?.message || "invalid refresh token")
+    throw new ApiError(401,error?.message || "invalid refresh token")
 }
 
 })
