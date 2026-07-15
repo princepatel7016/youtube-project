@@ -3,8 +3,27 @@ import {ApiError}  from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
 import {uploadoncloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/apiResponse.js";
-// import {upload} from "../middleware/multer.middleware.js"
-// import  router from "../routes/user.routes.js"
+import jwt from "jsonwebtoken"
+
+
+
+const genrateaccessandrefreshtoken = async(userid) => {
+    try{
+        const user = await User.findById(userid) // Database se pura user object aa gaya.
+        const accesstoken = user.genrateAccessToken() //Access Token banana
+        const refreshToken = user.genrateRefreshToken()
+
+        
+        user.refreshToken = refreshToken
+        await user.save({validateBeforeSave: false})  //Refresh Token database me save karna
+
+        return {accesstoken,refreshToken}
+
+    }catch(error){
+        throw new ApiError(500, "somthing went wrong while genrating refresh and acess token" )
+    }
+}
+
 
 
 const registeruser = asynchandler( async (req,res) => {
@@ -108,6 +127,141 @@ return res.status(201).json(
 
 })
 
-// jyare url aave tyare aa mothod run thai
 
-export {registeruser}
+const loginuser = asynchandler( async (req,res)=>{
+//jab user ka account he and vo login karta he
+// req body -> data req body ma thi data layava nu
+// username or email
+// find the user
+// password check
+// access and refresh token
+// send cookie
+
+
+const {email,password,username} = req.body
+console.log(email)
+
+if(!username && !email){
+    throw new ApiError(400,"username or password is require")
+}
+
+
+// user.findOne({email})
+const user = await User.findOne({    // Database me ek user search karta hai
+    $or: [{username},{email}]  //username ka to email find database ma 
+})
+
+if(!user){
+    throw new ApiError(404, "user dose not exist")
+}
+
+
+const ispasswordvalid = await user.isPasswordCorrect(password)
+
+if(!ispasswordvalid){
+    throw new ApiError(401, "inavaid password")
+}
+
+const {accesstoken , refreshToken} = await genrateaccessandrefreshtoken(user._id)
+
+const loggedinuser = await User.findById(user._id).select("-password -refreshToken")
+
+const options = {
+    //cokkie modified only server not fronted
+    httpOnly: true,   
+    secure: false,
+    
+}
+
+return res
+.status(200)
+.cookie("accesstoken", accesstoken, options)  // "key" , value
+.cookie("refreshToken", refreshToken, options)
+.json(
+    new ApiResponse(200, {
+        user:loggedinuser,accesstoken , refreshToken
+    },"user logged in sucessfully"
+)
+)
+
+
+})
+
+
+const logoutuser = asynchandler(async (req,res)=>{
+    await User.findByIdAndUpdate(  
+        //ID se user ko dhoondo aur uski information update karo. <- findbyupadtid
+        req.user._id,
+        {
+            $set:{
+                //Kisi field ki value update (change) karna ye $set ka kam he
+                refreshToken: undefined
+            }
+        },  
+        {
+            new: true  //Update hone ke baad wala document return karo.
+        }
+    )
+    const options = {
+    httpOnly: true,    //Browser ka JavaScript cookie ko access nahi kar sakta.
+    secure: false
+}
+
+return res.status(200).clearCookie("accesstoken", options)  
+.clearCookie("refreshToken", options) // browser se refrenshtoken delete
+.json(new ApiResponse(200,{},"user logged out"))
+
+})
+
+
+const refreshaccesstoken = asynchandler( async (req,res) => {
+const incommingrefreshtoken = req.cookies.refreshToken || req.body.refreshToken
+
+if(!incommingrefreshtoken){
+    throw new ApiError(401,"unothorized request")
+}
+// aa refreshtoken user pase chhe te mokle chhe
+
+try {
+    const decodedToken = jwt.verify(incommingrefreshtoken,process.env.REFRESH_TOKEN_SECRET)
+    // verify mate aek token and secret information devi pade
+    //decodedtoken ni andar aapne ne _id malse
+    
+    const user = await User.findById(decodedToken?._id)   // user aavi gayo
+    
+    if(!user){
+        throw new ApiError(401,"invalid refresh token")
+    }
+    // aa refreshtoken databse me save chhe te chhe
+    
+    
+    if(incommingrefreshtoken !== user?.refreshToken){
+        throw new ApiError(401,"refreshtoken expire or used")
+    }
+    
+    const options = {
+        httpOnly:true,
+        secure:true
+    }
+    
+    const {accesstoken, newrefreshToken} = await genrateaccessandrefreshtoken(user._id)
+    
+    return res.status(200)
+    .cookie("accesstoken",accesstoken,options)
+    .cookie("refreshToken",newrefreshToken,options)
+    .json(
+        new ApiResponse(
+            200,
+            {accesstoken , refreshToken:newrefreshToken},
+            "access token refreshed"
+        )
+    )
+    
+    })
+    
+} catch (error) {
+    throw new ApiError(401,erro?.message || "invalid refresh token")
+    
+}
+
+export {registeruser , loginuser ,logoutuser , refreshaccesstoken}
