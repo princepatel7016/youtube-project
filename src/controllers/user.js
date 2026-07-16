@@ -266,4 +266,151 @@ try {
 
 })
 
-export {registeruser , loginuser ,logoutuser , refreshaccesstoken}
+
+
+const changecoorentpassword = asynchandler(async (req,res) =>{
+    const {oldpassword, newpassword} = req.body
+
+    const user = await User.findById(req.user?._id)
+
+    const isPasswordCorrect = user.isPasswordCorrect(oldpassword)
+
+    if(!isPasswordCorrect){
+        throw new ApiError(400,"invalid oldpassword")
+    }
+
+    user.password = newpassword
+    await user.save({validateBeforeSave:false})
+
+    return res.status(200)
+    .json(new ApiResponse(200, {}, "password change successfully"))
+})
+
+
+
+const getcurrentuser = asynchandler(async (req,res) => {
+    return res.status(200)
+    .json(200, req.user , "current user fetched sccussfully")
+})
+
+
+
+const updateaccountdetails = asynchandler(async (req,res) => {
+    const {fullName, username} = req.body
+
+    if(!username && !fullName){
+        throw new ApiError(400, "all fields are required")
+    }
+
+    const user = User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set:{
+                fullname: fullName,
+                username: username
+            }
+        },
+        {
+            new: true  //Matlab update hone ke baad wala document.
+        }
+    ).select("-password")
+
+    return res.status(200)
+    .json(new ApiResponse(200 , user , "account details update successfully") )
+
+
+})
+
+
+
+const updateuseravtar = asynchandler(async (req,res) => {
+
+    const avtarlocalpath = req.file?.path
+
+    if(!avtarlocalpath){
+        throw new ApiError(400,"avtar file is missing")
+    }
+
+    const avatar = await uploadoncloudinary(avtarlocalpath)
+
+    if(!avtar.url){
+        throw new ApiError(400, "error while uploading on avtar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        //Database me kisi document ko uski ID se find karo aur update kar do.
+        // iss me    id, update, options teen cheez pass hoti he
+        req.user?._id,
+        {
+            $set:{
+                avatar: avatar.url
+            }
+        },
+        {
+            new:true
+        }
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user , "avtar updated successfully")
+    )
+
+
+
+})
+
+
+
+const updateusercoverimage = asynchandler(async (req,res) => {
+
+    const coverimagelocalpath = req.file?.path
+
+    if(!coverimagelocalpath){
+        throw new ApiError(400,"coverimage file is missing")
+    }
+
+    const coverimage = await uploadoncloudinary(coverimagelocalpath)
+
+    if(!coverimage.url){
+        throw new ApiError(400, "error while uploading on coverimage")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        //Database me kisi document ko uski ID se find karo aur update kar do.
+        // iss me    id, update, options teen cheez pass hoti he
+        req.user?._id,
+        {
+            $set:{
+                coverimage: coverimage.url
+            }
+        },
+        {
+            new:true
+        }
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user , "coverimage updated successfully")
+    )
+
+
+
+})
+
+
+
+
+export {registeruser,
+        loginuser,
+        logoutuser,
+        refreshaccesstoken,
+        changecoorentpassword,
+        getcurrentuser,
+        updateaccountdetails,
+        updateuseravtar,
+        updateusercoverimage 
+    }
