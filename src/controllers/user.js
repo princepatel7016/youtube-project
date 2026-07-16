@@ -282,7 +282,8 @@ const changecoorentpassword = asynchandler(async (req,res) =>{
     user.password = newpassword
     await user.save({validateBeforeSave:false})
 
-    return res.status(200)
+    return res
+    .status(200)
     .json(new ApiResponse(200, {}, "password change successfully"))
 })
 
@@ -290,7 +291,8 @@ const changecoorentpassword = asynchandler(async (req,res) =>{
 
 const getcurrentuser = asynchandler(async (req,res) => {
     return res.status(200)
-    .json(200, req.user , "current user fetched sccussfully")
+    .json( new ApiResponse( 200, req.user, "current user fetched successfully"
+    ))
 })
 
 
@@ -302,7 +304,7 @@ const updateaccountdetails = asynchandler(async (req,res) => {
         throw new ApiError(400, "all fields are required")
     }
 
-    const user = User.findByIdAndUpdate(
+    const user =  User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -402,7 +404,84 @@ const updateusercoverimage = asynchandler(async (req,res) => {
 })
 
 
+const getuserchhenelprofile = asynchandler( async (req,res) => {
+    const {username} = req.params
+    //User se URL ke through data aata hai.
 
+    if(!username?.trim()){
+        //trim() ye String ke starting aur ending me jo extra spaces hoti hain unhe hata dena.
+        //?. ko Optional Chaining Operator kehte hain
+        //Agar value exist karti hai to aage badho, agar nahi karti to error mat do.
+        throw new ApiError(400,"username is missing")
+    }
+
+    const channel = await User.aggregate([
+        {
+            $match:{
+                username: username?.toLowerCase()
+            }//mari pase aek atiyare user chhe hve count te user na subscriber
+        },
+        {
+            $lookup:{
+                from: "subscriptions",
+                localField: "_id",            //Current user ka _id lo.
+                foreignField: "channel",
+                as: "subscribers"
+            } // ama badha document bhega thaya ,je user ae je ne subscribe karya te
+        },
+        {
+            $lookup:{
+                from: "subscriptions",
+                localField: "_id",            
+                foreignField: "subscriber",
+                as: "subscribedto"  // me ketla ne subscribe karya chhe
+            }
+        },
+        {
+            $addFields:{
+                subscriberscount:{
+                    $size: "$subscribers"
+                },
+                channelsubscribedtocount:{
+                    $size: "$subscribedto"
+                },
+                issubscribed:{
+                    $cond: {
+                        if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                        then:true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $project:{
+                fullName: 1,
+                username: 1,
+                subscriberscount: 1,
+                channelsubscribedtocount: 1,
+                issubscribed: 1,
+                avatar: 1,
+                coverimage: 1,
+                email: 1
+            }
+        }
+
+    ])
+
+    if(!channel?.length){
+        throw new ApiError(404,"chhanel does not exist")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, channel[0], "user channel fetched successfuly")
+    )
+
+
+
+})
 
 export {registeruser,
         loginuser,
@@ -412,5 +491,6 @@ export {registeruser,
         getcurrentuser,
         updateaccountdetails,
         updateuseravtar,
-        updateusercoverimage 
+        updateusercoverimage,
+        getuserchhenelprofile
     }
