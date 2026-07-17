@@ -33,7 +33,7 @@ router.route("/update-account").patch(verifyjwt,updateaccountdetails)
 
 router.route("/avatar").patch(verifyjwt, upload.single("avatar"), updateuseravtar)
 
-router.route("/cover-image").patch(verifyjwt, upload.single("/coverimage"), updateusercoverimage)
+router.route("/cover-image").patch(verifyjwt, upload.single("coverimage"), updateusercoverimage)
 
 router.route("/c/:username").get(verifyjwt,getuserchhenelprofile)
 

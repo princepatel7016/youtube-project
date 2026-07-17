@@ -193,9 +193,9 @@ const logoutuser = asynchandler(async (req,res)=>{
         //ID se user ko dhoondo aur uski information update karo. <- findbyupadtid
         req.user._id,
         {
-            $set:{
+            $uset:{
                 //Kisi field ki value update (change) karna ye $set ka kam he
-                refreshToken: undefined
+                refreshToken: 1
             }
         },  
         {
@@ -445,7 +445,7 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
                     $size: "$subscribers"  
                     //size = Array me kitni items hain vo count karta he  **** object count thase
                     //$subscribers = as ne jo array of object banaya vo yaha aaya
-                 },
+                },
                 channelsubscribedtocount:{
                     $size: "$subscribedto"
                 },
@@ -504,6 +504,7 @@ const getwatchHistory = asynchandler(async (req,res) => {
                 localField:"watchHistory",
                 foreignField:"_id",
                 as: "watchHistory",
+                //Videos mil gaye. Ab har video par aur aggregation chalao.
                 pipeline: [
                     {
                         $lookup: {
