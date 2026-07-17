@@ -407,6 +407,7 @@ const updateusercoverimage = asynchandler(async (req,res) => {
 const getuserchhenelprofile = asynchandler( async (req,res) => {
     const {username} = req.params
     //User se URL ke through data aata hai.
+    // me jese hi search karunga to mera username iss me aa jayega {}
 
     if(!username?.trim()){
         //trim() ye String ke starting aur ending me jo extra spaces hoti hain unhe hata dena.
@@ -426,7 +427,8 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
                 from: "subscriptions",
                 localField: "_id",            //Current user ka _id lo.
                 foreignField: "channel",
-                as: "subscribers"
+                as: "subscribers"     //req user na ketla subscriber chhe te aavshe
+                // as ma aapne ne array of object male
             } // ama badha document bhega thaya ,je user ae je ne subscribe karya te
         },
         {
@@ -434,20 +436,24 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
                 from: "subscriptions",
                 localField: "_id",            
                 foreignField: "subscriber",
-                as: "subscribedto"  // me ketla ne subscribe karya chhe
+                as: "subscribedto"  // me ketla ne subscribe karya chhe te store thashe
             }
         },
         {
             $addFields:{
                 subscriberscount:{
-                    $size: "$subscribers"
-                },
+                    $size: "$subscribers"  
+                    //size = Array me kitni items hain vo count karta he  **** object count thase
+                    //$subscribers = as ne jo array of object banaya vo yaha aaya
+                 },
                 channelsubscribedtocount:{
                     $size: "$subscribedto"
                 },
                 issubscribed:{
                     $cond: {
+                        //$cond ye mongodb ka if else chek kartaa he 
                         if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                        // $in = Check karta hai ki value array ke andar hai ya nahi
                         then:true,
                         else: false
                     }
@@ -456,6 +462,7 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
         },
         {
             $project:{
+                //$project = Final output me kaun-kaun se fields bhejni hain aur kaun si nahi bhejni.
                 fullName: 1,
                 username: 1,
                 subscriberscount: 1,
@@ -483,6 +490,63 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
 
 })
 
+
+const getwatchHistory = asynchandler(async (req,res) => {
+    const user = await User.aggregate([
+        {
+            $match:{
+                _id: new mongoose.Types.ObjectId(req.user._id)
+            }
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"watchHistory",
+                foreignField:"_id",
+                as: "watchHistory",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project:{
+                                        fullName: 1,
+                                        username: 1,
+                                        avatar: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields:{
+                            owner:{
+                                $first: "$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            user[0].watchHistory,
+            "wach history successfully"
+        )
+    )
+
+})
+
+
 export {registeruser,
         loginuser,
         logoutuser,
@@ -492,5 +556,6 @@ export {registeruser,
         updateaccountdetails,
         updateuseravtar,
         updateusercoverimage,
-        getuserchhenelprofile
+        getuserchhenelprofile,
+        getwatchHistory
     }
