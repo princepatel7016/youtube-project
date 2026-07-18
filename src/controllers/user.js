@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import {uploadoncloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken"
-
+import mongoose from "mongoose";
 
 
 const genrateaccessandrefreshtoken = async(userid) => {
@@ -193,9 +193,9 @@ const logoutuser = asynchandler(async (req,res)=>{
         //ID se user ko dhoondo aur uski information update karo. <- findbyupadtid
         req.user._id,
         {
-            $uset:{
-                //Kisi field ki value update (change) karna ye $set ka kam he
+            $unset:{
                 refreshToken: 1
+                //this remove the field from document
             }
         },  
         {
@@ -304,7 +304,7 @@ const updateaccountdetails = asynchandler(async (req,res) => {
         throw new ApiError(400, "all fields are required")
     }
 
-    const user =  User.findByIdAndUpdate(
+    const user =  await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -335,7 +335,7 @@ const updateuseravtar = asynchandler(async (req,res) => {
 
     const avatar = await uploadoncloudinary(avtarlocalpath)
 
-    if(!avtar.url){
+    if(!avatar ){
         throw new ApiError(400, "error while uploading on avtar")
     }
 
@@ -358,9 +358,6 @@ const updateuseravtar = asynchandler(async (req,res) => {
     .json(
         new ApiResponse(200, user , "avtar updated successfully")
     )
-
-
-
 })
 
 
@@ -375,7 +372,7 @@ const updateusercoverimage = asynchandler(async (req,res) => {
 
     const coverimage = await uploadoncloudinary(coverimagelocalpath)
 
-    if(!coverimage.url){
+    if(!coverimage){
         throw new ApiError(400, "error while uploading on coverimage")
     }
 
@@ -485,8 +482,6 @@ const getuserchhenelprofile = asynchandler( async (req,res) => {
     .json(
         new ApiResponse(200, channel[0], "user channel fetched successfuly")
     )
-
-
 
 })
 
