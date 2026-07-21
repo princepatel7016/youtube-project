@@ -8,24 +8,5 @@ import jwt from "jsonwebtoken"
 import mongoose , {isValidObjectId} from "mongoose";
 
 const videofileadd = asynchandler(async (req,res) => {
-    const videolocalpath = req.file?.path
-
-    if(!videolocalpath){
-        throw new ApiError(400, "video file is missing")
-    }
-
-    const video = await uploadoncloudinary(videolocalpath)
-
-    if(!video){
-        throw new ApiError(400, "error uploading not cloudinary")
-    }
-
-    const user = User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set:{
-                videofile: video.url
-            }
-        }
-    )
+    
 })

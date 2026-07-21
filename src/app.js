@@ -6,6 +6,7 @@ const app = express()
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
+    //origin → Kaunsi website ko backend access karne ki permission deni hai.
     credentials:true                // browser send Cookies allow 
 }))
 

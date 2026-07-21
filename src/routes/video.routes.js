@@ -6,7 +6,7 @@ import {videofile} from "../controllers/video.js"
 
 const router = Router()
 
-router.route("/videofileadd").post(
+router.route("/videoadd").post(
     upload.fields([
         {
             name:"videofile",
@@ -17,9 +17,9 @@ router.route("/videofileadd").post(
             maxCount:1
         }
     ]),
-    publishAVideo)
+    videofileadd)
 
-router.route("/:videoid")
+// router.route("/:videoid")
 
 
 export default router
