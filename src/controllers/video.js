@@ -56,7 +56,12 @@ const videoupload = asynchandler(async (req,res) => {
     )
 })
 
+const getallvideo = asynchandler(async (req,res) =>{
+    const {page=1 , limit=10 , query, sortBy, sortType, userId} = req.query
+    //req.query URL ke end me jo data aata hai, usko receive karta hai.
+})
 
 export {
-    videoupload
+    videoupload,
+    getallvideo
 }
