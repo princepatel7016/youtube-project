@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { upload } from "../middleware/multer.middleware";
-import {upload} from "../middleware/multer.middleware.js"
+import { upload } from "../middleware/multer.middleware.js";
 import { verifyjwt } from "../middleware/auth.middleware.js";
-import {videofile} from "../controllers/video.js"
+import {videoupload} from "../controllers/video.js"
 
 const router = Router()
 
 router.route("/videoadd").post(
+    verifyjwt,
     upload.fields([
         {
             name:"videofile",
@@ -17,7 +17,7 @@ router.route("/videoadd").post(
             maxCount:1
         }
     ]),
-    videofileadd)
+    videoupload)
 
 // router.route("/:videoid")
 
