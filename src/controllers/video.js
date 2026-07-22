@@ -81,8 +81,26 @@ const getAllvideo = asynchandler(async (req,res) =>{
 
 })
 
+const getVideoById = asynchandler(async (req,res)=>{
+    //Database me jitni videos hain, unme se  sirf ek video nikalni.
+
+    const { videoId } = req.params
+
+    const video =  await Video.findById(videoId)
+
+    if(!video){
+        throw new ApiError(404, "video is not available")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, video, "video fetch succfully ")
+    )
+
+})
+
 
 export {
     videoupload,
-    getAllvideo
+    getAllvideo,
+    getVideoById
 }
