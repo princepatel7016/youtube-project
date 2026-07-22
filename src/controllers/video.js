@@ -166,10 +166,30 @@ return res.status(200).json(
     )
 })
 
+
+const deleteVideo = asynchandler(async (req,res)=>{
+    const { videoId } = req.params
+
+    const video = await Video.findByIdAndDelete({
+        _id: videoId
+    })
+
+    if(!video){
+        throw new ApiError(400, "video not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,video,"succfully delete")
+    )
+})
+
 export {
     videoupload,
     getAllvideo,
     getVideoById,
     updateVideo,
-    updateThumbnail
+    updateThumbnail,
+    deleteVideo
 }
+
+// backend response me video to bhejta he sath me _id ye video ki id bhi bhejta he
