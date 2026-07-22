@@ -56,12 +56,33 @@ const videoupload = asynchandler(async (req,res) => {
     )
 })
 
-const getallvideo = asynchandler(async (req,res) =>{
+const getAllvideo = asynchandler(async (req,res) =>{
     const {page=1 , limit=10 , query, sortBy, sortType, userId} = req.query
-    //req.query URL ke end me jo data aata hai, usko receive karta hai.
+    //req.query URL ke end me jo data aata hai, usko receive karta hai. sab value string hoti he
+    //ye string value data base me save he
+
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+
+    if(pageNumber<1 || limitNumber<10){
+        new ApiError(400,"inavalid page and")
+    }
+
+    const skip =(pageNumber-1) * limitNumber;
+
+    const videos = await  Video.find({ ispublished: true})
+        .skip(skip)
+        .limit(limitNumber);
+
+    return res.status(200).json(
+        new ApiResponse(200, videos , "video fetched succfully")
+    )
+    
+
 })
+
 
 export {
     videoupload,
-    getallvideo
+    getAllvideo
 }
