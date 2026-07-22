@@ -99,8 +99,77 @@ const getVideoById = asynchandler(async (req,res)=>{
 })
 
 
+const updateVideo = asynchandler(async (req,res)=> {
+    const  { videoId } = req.params
+
+    const {title, description} = req.body
+
+    if(!(title?.trim() || description?.trim())){
+        throw new ApiError(400, "please provide titl or  description")
+    }
+
+    const video = await Video.findByIdAndUpdate(
+        videoId,
+        {
+            $set:{
+                title:title,
+                description: description
+            }
+        },
+        {
+            new:true
+        }
+    )
+
+    if(!video){
+        throw new ApiError(404, "video not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,video, "update video is succfully")
+    )
+
+})
+
+const updateThumbnail = asynchandler(async (req,res)=>{
+
+const { videoId } = req.params;
+
+const thumbnaillocalpath = req.file?.path;
+
+if(!thumbnaillocalpath){
+    throw new ApiError(400,"error while uploading thumbnail")
+    }
+
+const thumbnail = await uploadoncloudinary(thumbnaillocalpath)
+
+if(!thumbnail){
+    throw new ApiError(400,"thumnail not upload cloudnariy")
+    }
+
+
+
+const newthumbnail = await Video.findByIdAndUpdate(
+    videoId,
+        { 
+            $set:{
+            thumbnail: thumbnail.url
+            }
+        },
+        {
+        new:true
+        }
+    )
+
+return res.status(200).json(
+        new ApiResponse(200,newthumbnail, "upadate thumbnail sussfully")
+    )
+})
+
 export {
     videoupload,
     getAllvideo,
-    getVideoById
+    getVideoById,
+    updateVideo,
+    updateThumbnail
 }
