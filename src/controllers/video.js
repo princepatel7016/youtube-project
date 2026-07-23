@@ -71,6 +71,7 @@ const getAllvideo = asynchandler(async (req,res) =>{
     const skip =(pageNumber-1) * limitNumber;
 
     const videos = await  Video.find({ ispublished: true})
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limitNumber);
 
