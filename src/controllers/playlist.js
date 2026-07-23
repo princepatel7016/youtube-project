@@ -29,7 +29,26 @@ const createPlaylist = asynchandler(async(req,res)=>{
     )
 })
 
+const getUserPlaylist = asynchandler(async(req,res)=>{
+    const { userId } = req.params
+
+    const playlist = await Playlist.find({
+        owner: userId
+    })
+
+    if(playlist.length === 0){
+        throw new ApiError(404,"playlist not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,playlist,"playlist fetched sussfully")
+    )
+})
+
+
+
 
 export {
-    createPlaylist
+    createPlaylist,
+    getUserPlaylist
 }
