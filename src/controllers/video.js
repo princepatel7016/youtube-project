@@ -183,13 +183,40 @@ const deleteVideo = asynchandler(async (req,res)=>{
     )
 })
 
+const togglePublishStatus = asynchandler(async (req,res)=> {
+    const { videoId } = req.params
+
+    const video = await Video.findById(videoId)
+
+    if(!video){
+        throw new ApiError(404, "video not found")
+    }
+
+    const update = await Video.findByIdAndUpdate(
+        videoId,
+        {
+            $set:{
+                ispublished:!video.ispublished
+            }
+        },
+        {
+            new:true
+        }
+    )
+
+    return res.status(200).json(
+        new ApiResponse(200,update,"private video succfully")
+    )
+})
+
 export {
     videoupload,
     getAllvideo,
     getVideoById,
     updateVideo,
     updateThumbnail,
-    deleteVideo
+    deleteVideo,
+    togglePublishStatus
 }
 
 // backend response me video to bhejta he sath me _id ye video ki id bhi bhejta he
