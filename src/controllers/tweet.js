@@ -77,8 +77,66 @@ const getusertweet = asynchandler(async(req,res)=>{
     )
 })
 
+const updatetweet = asynchandler(async(req,res)=>{
+    const {tweetId} = req.params
+
+    const {content} = req.body
+
+    if(!tweetId){
+        throw new ApiError(400,"tweetId is required")
+    }
+
+    if(!content?.trim()){
+        throw new ApiError(400,"content is required")
+    }
+
+    const tweet = await Tweet.findByIdAndUpdate(
+        tweetId,
+        {
+            $set:{
+                content:content
+            }
+        },{
+            new:true
+        }
+    )
+
+    if(!tweet){
+        throw new ApiError(404,"tweet not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,tweet,"tweet updated successfully")
+    )
+})
+
+const deletetweet =asynchandler(async(req,res)=>{
+    const {tweetId} = req.params
+
+    if(!tweetId){
+        throw new ApiError(400,"tweetId is required")
+    }
+
+    const tweet = await Tweet.findOneAndDelete(
+        {
+        _id: tweetId,
+        owner: req.user._id
+        }
+)
+
+    if(!tweet){
+        throw new ApiError(404,"tweet not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,tweet,"tweet deleted successfully")
+    )
+})
+
 export {
     createTweet,
     getTweet,
-    getusertweet
+    getusertweet,
+    updatetweet,
+    deletetweet
 }
