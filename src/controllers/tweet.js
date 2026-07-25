@@ -33,6 +33,30 @@ const createTweet = asynchandler(async(req,res)=>{
     )
 })
 
+const getTweet = asynchandler(async(req,res)=>{
+
+    const {page=1, limit=10} = req.query
+
+    const pageNumber = Number(page)
+    const limitNumber = Number(limit)
+
+    if(pageNumber<1 && limitNumber<10){
+        throw new ApiError(400,"invalid page and limit")
+    }
+
+    const skip = (pageNumber - 1 ) * limitNumber
+
+    const tweetshow = await Tweet.find({ispublished: true})
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limitNumber)
+
+    return res.status(200).json(
+        new ApiResponse(200,tweetshow,"tweet fetched successfully")
+    )
+})
+
 export {
-    createTweet
+    createTweet,
+    getTweet
 }

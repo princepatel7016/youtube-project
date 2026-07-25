@@ -8,7 +8,11 @@ const tweetschema = new Schema({
     content:{
         type:String,
         required:true
-    }
+    },
+    ispublished:{
+        type: Boolean,
+        default: true
+    },
 
 },{timestamps:true})
 
