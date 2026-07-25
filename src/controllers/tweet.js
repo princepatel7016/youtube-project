@@ -56,7 +56,29 @@ const getTweet = asynchandler(async(req,res)=>{
     )
 })
 
+
+const getusertweet = asynchandler(async(req,res)=>{
+    const {userId} = req.params
+
+    if(!userId){
+        throw new ApiError(400,"userId is required")
+    }
+
+    const tweet = await Tweet.find(
+        {owner: userId}
+    ) 
+
+    if(tweet.length === 0){
+        throw new ApiError(404,"tweet not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,tweet,"tweet fetched successfully")
+    )
+})
+
 export {
     createTweet,
-    getTweet
+    getTweet,
+    getusertweet
 }
