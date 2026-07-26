@@ -23,6 +23,7 @@ import videoRouter from "./routes/video.routes.js"
 import commentRouter from "./routes/comment.routes.js"
 import playlistRouter from "./routes/playlist.routes.js"
 import tweetRouter from "./routes/tweet.routes.js"
+import likeRouter from "./routes/like.routes.js"
 
 
 
@@ -31,6 +32,7 @@ app.use("/api/v1/videos",videoRouter)
 app.use("/api/v1/comment",commentRouter)
 app.use("/api/v1/playlist",playlistRouter)
 app.use("/api/v1/Tweet",tweetRouter)
+app.use("/api/v1/Like",likeRouter)
 
 
 
@@ -40,7 +42,7 @@ app.use("/api/v1/Tweet",tweetRouter)
 
 
 //  http://localhost:8000/api/v1/users/register
-//  http://localhost:8000/api/v1/users/loginuser
+
 
 export { app }
 
