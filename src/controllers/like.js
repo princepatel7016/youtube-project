@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { Like } from "../models/like.model.js";
 import { Video } from "../models/video.model.js";
 import { Comment } from "../models/comment.model.js";
+import { Tweet } from "../models/tweet.model.js";
 
 
 const togglevideolike = asynchandler(async (req,res)=>{
@@ -76,8 +77,50 @@ const togglecommentlike = asynchandler(async(req,res)=>{
     );
 });
 
+const toggletweetlike = asynchandler(async(req,res)=>{
+    const { tweetId } = req.params;
+
+    // 1. Check valid ObjectId
+    if (!tweetId) {
+        throw new ApiError(400, "Invalid Tweet Id");
+    }
+
+    // 2. Check tweet exists
+    const tweet = await Tweet.findById(tweetId);
+
+    if (!tweet) {
+        throw new ApiError(404, "Tweet not found");
+    }
+
+    // 3. Check if already liked
+    const alreadyLiked = await Like.findOne({
+        tweet: tweetId,
+        likedBy: req.user._id,
+    });
+
+    // 4. If liked then remove like
+    if (alreadyLiked) {
+        await Like.findByIdAndDelete(alreadyLiked._id);
+
+        return res.status(200).json(
+            new ApiResponse(200, {}, "Tweet unliked successfully")
+        );
+    }
+
+    // 5. Otherwise create like
+    await Like.create({
+        tweet: tweetId,
+        likedBy: req.user._id,
+    });
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Tweet liked successfully")
+    );
+
+})
 
 export {
     togglevideolike,
-    togglecommentlike
+    togglecommentlike,
+    toggletweetlike
 }
