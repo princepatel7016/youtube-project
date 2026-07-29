@@ -8,6 +8,7 @@ import { Comment } from "../models/comment.model.js";
 import { Tweet } from "../models/tweet.model.js";
 
 
+
 const togglevideolike = asynchandler(async (req,res)=>{
     const {videoId} = req.params
 
@@ -119,8 +120,21 @@ const toggletweetlike = asynchandler(async(req,res)=>{
 
 })
 
+const getlikevideos = asynchandler(async(req,res)=>{
+
+    const likedVideos = await Like.find({
+        likedBy: req.user._id,
+        video: { $exists: true }
+    }).populate("video");
+
+    return res.status(200).json(
+        new ApiResponse(200,likedVideos,"Liked videos fetched successfully")
+    );
+})
+
 export {
     togglevideolike,
     togglecommentlike,
-    toggletweetlike
+    toggletweetlike,
+    getlikevideos
 }
