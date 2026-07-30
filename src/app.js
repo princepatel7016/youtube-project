@@ -24,6 +24,7 @@ import commentRouter from "./routes/comment.routes.js"
 import playlistRouter from "./routes/playlist.routes.js"
 import tweetRouter from "./routes/tweet.routes.js"
 import likeRouter from "./routes/like.routes.js"
+import DashbordRouter from "./routes/dashbord.routes.js"
 
 
 
@@ -33,6 +34,7 @@ app.use("/api/v1/comment",commentRouter)
 app.use("/api/v1/playlist",playlistRouter)
 app.use("/api/v1/Tweet",tweetRouter)
 app.use("/api/v1/Like",likeRouter)
+app.use("/api/v1/Dashbord",DashbordRouter)
 
 
 
