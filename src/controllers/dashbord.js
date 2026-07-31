@@ -6,36 +6,51 @@ import { ApiResponse } from "../utils/apiResponse.js"
 import { asynchandler } from "../utils/asynchandler.js"
 
 const getChannelStats = asynchandler(async (req, res) => {
+    const userId = new mongoose.Types.ObjectId(req.user._id);
 
-    const userId = req.user._id;
-
-    // Get all videos of current user
-    const videos = await Video.find({
-        owner: userId
-    });
-
-    // Total Videos
-    const totalVideos = videos.length;
-
-    // Total Views
-    const totalViews = videos.reduce((acc, video) => {
-        return acc + video.views;
-    }, 0);
-
-    // Get all video ids
-    const videoIds = videos.map(video => video._id);
-
-    // Total Likes
-    const totalLikes = await Like.countDocuments({
-        video: {
-            $in: videoIds
+    // Total Videos + Total Views
+    const videoStats = await Video.aggregate([
+        {
+            $match: {
+                owner: userId
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalVideos: { $sum: 1 },
+                totalViews: { $sum: "$views" },
+                videoIds: { $push: "$_id" }
+            }
         }
-    });
+    ]);
 
-    // Total Subscribers
-    // const totalSubscribers = await Subscription.countDocuments({
-    //     channel: userId
-    // });
+    let totalVideos = 0;
+    let totalViews = 0;
+    let totalLikes = 0;
+
+    if (videoStats.length > 0) {
+        totalVideos = videoStats[0].totalVideos;
+        totalViews = videoStats[0].totalViews;
+
+        const likeStats = await Like.aggregate([
+            {
+                $match: {
+                    video: {
+                        $in: videoStats[0].videoIds
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalLikes: { $sum: 1 }
+                }
+            }
+        ]);
+
+        totalLikes = likeStats.length > 0 ? likeStats[0].totalLikes : 0;
+    }
 
     return res.status(200).json(
         new ApiResponse(
@@ -44,7 +59,6 @@ const getChannelStats = asynchandler(async (req, res) => {
                 totalVideos,
                 totalViews,
                 totalLikes,
-                // totalSubscribers
             },
             "Channel stats fetched successfully"
         )
