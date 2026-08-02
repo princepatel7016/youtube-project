@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home.jsx"
 import Login from "./pages/Login/Login.jsx"
 import Register from "./pages/Register/Register.jsx"
 import NotFound from "./pages/NotFound/NotFound.jsx"
+import Watch from "./pages/Watch/Watch";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/watch/:videoId" element={<Watch />} />
     </Routes>
   )
 }
