@@ -1,29 +1,61 @@
-import React from 'react'
+import "./Sidebar.css";
 
-const Sidebar = () => {
-return (
-    <div>
-    <div
-        style={{
-        width: "220px",
-        background: "#181818",
-        color: "white",
-        height: "calc(100vh - 60px)",
-        padding: "20px",
-        }}
-    >
-        <p>🏠 Home</p>
+function Sidebar(){
 
-        <p>🔥 Trending</p>
+    return(
 
-        <p>📜 History</p>
+        <div className="sidebar">
 
-        <p>👍 Liked Videos</p>
+            <div className="sidebar-menu">
 
-        <p>📁 Playlist</p>
-    </div>
-    </div>
-)
+                <div className="sidebar-item">
+
+                    🏠 Home
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    🔥 Trending
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    📺 Subscriptions
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    📜 History
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    👍 Liked Videos
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    📂 Playlist
+
+                </div>
+
+                <div className="sidebar-item">
+
+                    ⬆ Upload
+
+                </div>
+
+            </div>
+
+        </div>
+
+    )
+
 }
 
-export default Sidebar
+export default Sidebar;

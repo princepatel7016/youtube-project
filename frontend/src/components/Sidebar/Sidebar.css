@@ -1,0 +1,37 @@
+.sidebar{
+    width:220px;
+    height:calc(100vh - 60px);
+
+    background:#181818;
+
+    color:white;
+
+    position:sticky;
+
+    top:60px;
+
+    overflow-y:auto;
+}
+
+.sidebar-menu{
+    display:flex;
+
+    flex-direction:column;
+}
+
+.sidebar-item{
+
+    padding:15px 20px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    font-size:16px;
+}
+
+.sidebar-item:hover{
+
+    background:#303030;
+
+}

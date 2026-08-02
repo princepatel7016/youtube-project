@@ -1,0 +1,69 @@
+.navbar{
+    height:60px;
+    background:#202020;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    position:sticky;  /* Scroll karne par Navbar upar hi rahega.*/
+    top:0;
+
+    z-index:1000;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.navbar-center{
+    display:flex;
+    align-items:center;
+
+    width:45%;
+}
+
+.search-input{
+    flex:1;
+
+    height:38px;
+
+    outline:none;
+
+    border:1px solid gray;
+
+    padding-left:15px;
+
+    font-size:16px;
+}
+
+.search-btn{
+    height:40px;
+
+    width:80px;
+
+    cursor:pointer;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+}
+
+.icon{
+    cursor:pointer;
+
+    font-size:18px;
+}

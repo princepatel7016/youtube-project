@@ -1,24 +1,49 @@
-import React from 'react'
+import "./Navbar.css";
 
-const Navbar = () => {
+function Navbar() {
 return (
-    <div>
-        <nav
-    style={{
-        height: "60px",
-        background: "#202020",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        padding: "0 20px",
-        fontSize: "22px",
-        fontWeight: "bold",
-    }}
-    >
-        YouTube Clone
+    <nav className="navbar">
+
+        <div className="navbar-left">
+
+        <div className="icon">
+            ☰
+        </div>
+
+        <div className="logo">
+            YouTube
+        </div>
+
+        </div>
+
+        <div className="navbar-center">
+
+        <input
+            className="search-input"
+            type="text"
+            placeholder="Search"
+        />
+
+        <button className="search-btn">
+            Search
+        </button>
+
+        </div>
+
+        <div className="navbar-right">
+
+        <div className="icon">
+            🔔
+        </div>
+
+        <div className="icon">
+            👤
+        </div>
+
+        </div>
+
     </nav>
-    </div>
-)
+  );
 }
 
-export default Navbar
+export default Navbar;
