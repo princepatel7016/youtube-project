@@ -11,11 +11,12 @@ return (
             display: "flex",
         }}
     >
-        <Sidebar />
+
+    <Sidebar />
 
         <div
             style={{
-            flex: 1,
+            flex: 1,             //"Sidebar ke baad jitni bhi jagah bachi hai, wo mujhe de do."
             padding: "20px",
             }}
         >
@@ -27,3 +28,7 @@ return (
 }
 
 export default Layout;
+
+// Navbar same rahega.
+// Sidebar same rahega.
+// Sirf children badlega (Home, About, Profile, VideoPage, etc.).

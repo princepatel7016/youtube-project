@@ -27,18 +27,17 @@ function Home() {
         <Layout>
             <h1>Home Page</h1>
             <h2>Total Videos : {videos.length}</h2>
-            <h2>Total Videos : {videos.length}</h2>
 
-<div className="home-container">
-{
-    videos.map((video)=>(
-    <VideoCard 
-    key={video._id}
-    video={video}
-/>
-))
-}
-</div>
+        <div className="home-container">
+    {
+        videos.map((video)=>(
+        <VideoCard 
+        key={video._id}
+        video={video}
+    />
+    ))
+    }
+        </div>
         </Layout>
     );
 }
