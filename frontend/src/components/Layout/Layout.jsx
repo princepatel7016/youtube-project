@@ -14,13 +14,13 @@ return (
 
     <Sidebar />
 
-        <div
-            style={{
-            flex: 1,             //"Sidebar ke baad jitni bhi jagah bachi hai, wo mujhe de do."
-            padding: "20px",
-            }}
+    <div
+        style={{
+        flex: 1,             //"Sidebar ke baad jitni bhi jagah bachi hai, wo mujhe de do."
+        padding: "20px",
+        }}
         >
-            {children}
+        {children}
         </div>
     </div>
     </>
@@ -32,3 +32,4 @@ export default Layout;
 // Navbar same rahega.
 // Sidebar same rahega.
 // Sirf children badlega (Home, About, Profile, VideoPage, etc.).
+//Isliye har page me Navbar dobara nahi likhna padta.
