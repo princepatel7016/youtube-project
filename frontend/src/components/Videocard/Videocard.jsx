@@ -19,11 +19,9 @@ return (
     <div className="video-info">
         <div className="video-details">
 
-        <h3 className="video-title">{video.title}</h3>
-
-        <p className="channel-name">My Channel</p>
-
-        <p className="views">{video.views} Views</p>
+            <h3 className="video-title">{video.title}</h3>
+            <p className="channel-name">My Channel</p>
+            <p className="views">{video.views} Views</p>
 
         </div>
     </div>

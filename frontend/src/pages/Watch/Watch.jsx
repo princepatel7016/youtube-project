@@ -3,24 +3,27 @@ import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import { getVideoById } from "../../services/videoApi";
 
+
 function Watch() {
 
-    const { videoId } = useParams();    //URL se ID nikal rahi hai.
-    const [video, setVideo] = useState(null);
-    useEffect(() => {
-        fetchVideo();
-    }, []);
+const { videoId } = useParams();    //URL se ID nikal rahi hai.
+const [video, setVideo] = useState(null);
+
+useEffect(() => {
+    fetchVideo();
+}, [videoId]);
 
     async function fetchVideo() {
         try {
-            const response = await getVideoById(videoId);
-            console.log(response);
-            setVideo(response.data.data);
+            const res = await getVideoById(videoId);
+            console.log("getVideoById response:", res);
+            // res is the ApiResponse object from backend; video is in res.data
+            setVideo(res.data);
         } catch (error) {
             console.log(error);
         }
     }
-    
+
 
     if (!video) {
         return (
@@ -29,7 +32,7 @@ function Watch() {
             </Layout>
         );
     }
-console.log(video);
+
     return (
         <Layout>
 
