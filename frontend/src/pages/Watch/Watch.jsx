@@ -45,7 +45,6 @@ useEffect(() => {
         Your browser does not support the video tag.
         </video>
 
-
             <h1>{video.title}</h1>
             <p>{video.description}</p>
             <p>{video.views} Views</p>
