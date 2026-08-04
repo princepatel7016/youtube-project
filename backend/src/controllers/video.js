@@ -72,13 +72,24 @@ const getAllvideo = asynchandler(async (req,res) =>{
 
     const videos = await  Video.aggregate([
         {
-            $match: {
-                ispublished: true
+            $match:{
+                ispublished:true
             }
         },
         {
+            $lookup:{
+                $from:"users",
+                $localField: "owner",
+                $foreignField: "_id",
+                $as:"owner"
+            }
+        },
+        {
+            $unwind:"$owner"
+        },
+        {
             $sort:{
-                createdAt: -1
+                createdAt:-1                      // new video pahle and badme old video
             }
         },
         {
@@ -86,6 +97,19 @@ const getAllvideo = asynchandler(async (req,res) =>{
         },
         {
             $limit: limitNumber
+        },
+        {
+            $project:{
+                title:1,
+                thumbnail:1,
+                videofile:1,
+                description:1,
+                views:1,
+                duration:1,
+                createdAt:1,
+                "owner.username":1,
+                "owner.avatar":1
+                }
         }
     ])
 
@@ -104,16 +128,34 @@ const getVideoById = asynchandler(async (req,res)=>{
     const video =  await Video.aggregate([
         {
             $match:{
-                _id:videoId 
+                _id:new mongoose.Types.objectId(videoId)//Kyuki MongoDB me _id ka type ObjectId hota hai.
             }
         },
+        {
+            $lookup:{
+                from:"users",                         //User Collection me jao.
+                localField:"owner",                   //Video Collection me owner field use karo.
+                foreignField:"_id",                   //Users Collection me _id ke sath compare karo
+                as:"owner"                            //Jo user mile usko owner name se add karo
+            }
+        },
+        {
+            $unwind:"$owner"            //Ye array ko object bana deta hai.,owner array hoga use object banayega
+        },
+        {
+            $project:{
+                title:1,
+                description:1,
+                videofile:1,
+                thumbnail:1,
+                views:1,
+                "owner.username":1,
+                "owner.avatar":1
+            }
+        }
     ])
-
-    if (video.length === 0) {
-        throw new ApiError(404, "Video is not available");
-    }
-
-    if(!video){
+    //aggregate() hamesha array return karta hai.
+    if(video.length === 0){
         throw new ApiError(404, "video is not available")
     }
 
