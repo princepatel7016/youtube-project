@@ -1,0 +1,53 @@
+.watch-page {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.watch-left {
+    flex: 3;
+}
+
+.watch-right {
+    flex: 1;
+}
+
+.video-player {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.video-title {
+    font-size: 24px;
+    margin-top: 15px;
+}
+
+.video-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.video-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.video-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.description-box {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.suggested-title {
+    margin-bottom: 15px;
+}

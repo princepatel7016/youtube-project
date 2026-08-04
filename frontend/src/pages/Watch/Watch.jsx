@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import { getVideoById } from "../../services/videoApi";
+import "./Watch.css";
 
 
 function Watch() {
@@ -33,23 +34,53 @@ useEffect(() => {
         );
     }
 
-    return (
-        <Layout>
+return (
+    <Layout>
 
-        <video
-            src={video.videofile}
-            controls
-            width="100%"
-            height="500"
-        >
-        Your browser does not support the video tag.
-        </video>
+        <div className="watch-page">
+            <div className="watch-left">
+                <video
+                    className="video-player"
+                    controls
+                    src={video.videofile}
+                >
+                    Your browser does not support the video tag.
+                </video>
 
-            <h1>{video.title}</h1>
-            <p>{video.description}</p>
-            <p>{video.views} Views</p>
-        </Layout>
-    );
+                <h2 className="video-title">
+                    {video.title}
+                </h2>
+
+                <div className="video-stats">
+                    <span>
+                        {video.views} Views
+                    </span>
+                    <div className="video-actions">
+                        <button>👍 Like</button>
+                        <button>🔗 Share</button>
+                        <button>💾 Save</button>
+                    </div>
+                </div>
+
+                <div className="description-box">
+                    <p>{video.description}</p>
+                </div>
+            </div>
+
+            <div className="watch-right">
+                <h3 className="suggested-title">
+                    Suggested Videos
+                </h3>
+
+                <p>Video 1</p>
+                <p>Video 2</p>
+                <p>Video 3</p>
+            </div>
+
+        </div>
+
+    </Layout>
+);
 
 }
 

@@ -70,10 +70,24 @@ const getAllvideo = asynchandler(async (req,res) =>{
 
     const skip =(pageNumber-1) * limitNumber;
 
-    const videos = await  Video.find({ ispublished: true})
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limitNumber);
+    const videos = await  Video.aggregate([
+        {
+            $match: {
+                ispublished: true
+            }
+        },
+        {
+            $sort:{
+                createdAt: -1
+            }
+        },
+        {
+            $skip: skip
+        },
+        {
+            $limit: limitNumber
+        }
+    ])
 
     return res.status(200).json(
         new ApiResponse(200, videos , "video fetched succfully")
@@ -87,7 +101,17 @@ const getVideoById = asynchandler(async (req,res)=>{
 
     const { videoId } = req.params
 
-    const video =  await Video.findById(videoId)
+    const video =  await Video.aggregate([
+        {
+            $match:{
+                _id:videoId 
+            }
+        },
+    ])
+
+    if (video.length === 0) {
+        throw new ApiError(404, "Video is not available");
+    }
 
     if(!video){
         throw new ApiError(404, "video is not available")
