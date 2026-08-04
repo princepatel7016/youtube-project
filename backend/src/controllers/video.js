@@ -65,7 +65,7 @@ const getAllvideo = asynchandler(async (req,res) =>{
     const limitNumber = Number(limit);
 
     if(pageNumber<1 || limitNumber<10){
-        new ApiError(400,"inavalid page and")
+        throw new ApiError(400,"inavalid page and")
     }
 
     const skip =(pageNumber-1) * limitNumber;
@@ -78,10 +78,10 @@ const getAllvideo = asynchandler(async (req,res) =>{
         },
         {
             $lookup:{
-                $from:"users",
-                $localField: "owner",
-                $foreignField: "_id",
-                $as:"owner"
+                from:"users",
+                localField: "owner",
+                foreignField: "_id",
+                as:"owner"
             }
         },
         {
@@ -116,8 +116,6 @@ const getAllvideo = asynchandler(async (req,res) =>{
     return res.status(200).json(
         new ApiResponse(200, videos , "video fetched succfully")
     )
-    
-
 })
 
 const getVideoById = asynchandler(async (req,res)=>{
@@ -128,7 +126,7 @@ const getVideoById = asynchandler(async (req,res)=>{
     const video =  await Video.aggregate([
         {
             $match:{
-                _id:new mongoose.Types.objectId(videoId)//Kyuki MongoDB me _id ka type ObjectId hota hai.
+                _id:new mongoose.Types.ObjectId(videoId)//Kyuki MongoDB me _id ka type ObjectId hota hai.
             }
         },
         {
@@ -160,7 +158,7 @@ const getVideoById = asynchandler(async (req,res)=>{
     }
 
     return res.status(200).json(
-        new ApiResponse(200, video, "video fetch succfully ")
+        new ApiResponse(200, video[0], "video fetch succfully ")
     )
 
 })

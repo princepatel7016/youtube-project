@@ -23,10 +23,10 @@ function VideoCard({ video }) {
                         {video.title}
                     </h3>
                     <p className="channel-name">
-                        My Channel
+                        {video.owner?.username || "My Channel"}
                     </p>
                     <p className="views">
-                        {video.views} Views
+                    {video.views} Views
                     </p>
                 </div>
             </div>
