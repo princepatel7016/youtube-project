@@ -4,9 +4,9 @@ import { getVideocomment , addComment, updateComment , deleteComment} from "../c
 
 const router = Router()
 
-router.route("/getVideocomment/:videoid").get(getVideocomment)
+router.route("/getVideocomment/:videoId").get(getVideocomment)
 
-router.route("/comment/:videoid").post(verifyjwt,addComment)
+router.route("/comment/:videoId").post(verifyjwt,addComment)
 
 router.route("/updatecomment/:commentId").patch(verifyjwt,updateComment )
 

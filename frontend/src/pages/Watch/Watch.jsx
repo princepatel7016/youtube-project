@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import { getVideoById, getAllVideos } from "../../services/videoApi";
 import "./Watch.css";
 import { useNavigate } from "react-router-dom";
+import { getVideoComments } from "../../services/commentApi";
 
 function Watch() {
 
@@ -12,10 +13,12 @@ const navigate = useNavigate();
 
 const [video, setVideo] = useState(null);
 const [suggestedVideos, setSuggestedVideos] = useState([]);
+const [comments, setComments] = useState([]);
 
 useEffect(() => {
     fetchVideo();
-    fetchSuggestedVideos()
+    fetchSuggestedVideos();
+    fetchComments();
 }, [videoId]);
 
     async function fetchVideo() {
@@ -42,6 +45,17 @@ useEffect(() => {
     try {
         const res = await getAllVideos();
         setSuggestedVideos(res.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function fetchComments() {
+
+    try {
+        const res = await getVideoComments(videoId);
+        console.log("Comments:", res);
+        setComments(res.data);
     } catch (error) {
         console.log(error);
     }

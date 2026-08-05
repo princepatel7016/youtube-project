@@ -2,17 +2,16 @@ import { asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Comment } from "../models/comment.model.js";
-import { Mongoose } from "mongoose";
-import { verifyjwt } from "../middleware/auth.middleware.js";
+import mongoose, { isValidObjectId } from "mongoose";
 
 const getVideocomment = asynchandler( async (req,res)=>{
-    const { videoId } = req.params
+    const videoId = req.params.videoId || req.params.videoid
+
+    const {page=1 , limit=10 } = req.query
 
     if (!isValidObjectId(videoId)) {
     throw new ApiError(400, "Invalid video id");
-    }
-
-    const {page=1 , limit=10 } = req.query
+}
 
     const pageNumber = Number(page)
     const limitNumber = Number(limit)
@@ -26,7 +25,7 @@ const getVideocomment = asynchandler( async (req,res)=>{
     const comment = await Comment.aggregate([
         {
             $match: {
-                video: Mongoose.Types.ObjectId(videoId)
+                video: new mongoose.Types.ObjectId(videoId)
             }
         },
         {
