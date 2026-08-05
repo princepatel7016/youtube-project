@@ -122,10 +122,47 @@ const toggletweetlike = asynchandler(async(req,res)=>{
 
 const getlikevideos = asynchandler(async(req,res)=>{
 
-    const likedVideos = await Like.find({
-        likedBy: req.user._id,
-        video: { $exists: true }
-    }).populate("video");
+    const likedVideos = await Like.aggregate([
+        {
+            $match:{
+                likedBy:req.user._id,
+                video: { $exists: true }
+            }
+        },
+        {
+            $lookup:{
+                from:"videos",
+                localField:"video",
+                foreignField:"_id",
+                as:"video"
+            }
+        },
+        {
+            $unwind:"$video"
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"video.owner",
+                foreignField:"_id",
+                as:"owner"
+            }
+        },
+        {
+            $unwind:"$owner"
+        },
+        {
+            $project:{
+                _id: 0,
+                "video._id": 1,
+                "video.title": 1,
+                "video.thumbnail": 1,
+                "video.views": 1,
+                "owner.username": 1,
+                "owner.avatar": 1
+            }
+        }
+    ])
 
     return res.status(200).json(
         new ApiResponse(200,likedVideos,"Liked videos fetched successfully")

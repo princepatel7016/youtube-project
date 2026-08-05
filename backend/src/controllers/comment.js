@@ -8,6 +8,10 @@ import { verifyjwt } from "../middleware/auth.middleware.js";
 const getVideocomment = asynchandler( async (req,res)=>{
     const { videoId } = req.params
 
+    if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid video id");
+    }
+
     const {page=1 , limit=10 } = req.query
 
     const pageNumber = Number(page)
@@ -19,10 +23,43 @@ const getVideocomment = asynchandler( async (req,res)=>{
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    const comment = await Comment.find({video: videoId})
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limitNumber)
+    const comment = await Comment.aggregate([
+        {
+            $match: {
+                video: Mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner"
+            }
+        },
+        {
+            $unwind: "$owner"
+        },
+        {
+            $sort:{
+                createdAt:-1
+            }
+        },
+        {
+            $skip: skip
+        },
+        {
+            $limit: limitNumber
+        },
+        {
+            $project: {
+                content: 1,
+                createdAt: 1,
+                "owner.username": 1,
+                "owner.avatar": 1
+            }
+        }
+    ])
 
     return res.status(200).json(
         new ApiResponse(200, comment, "comment fetched sussfully")
