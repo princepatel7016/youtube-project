@@ -92,6 +92,24 @@ return (
     <div className="description-box">
         <p>{video.description}</p>
     </div>
+    
+</div>
+
+
+<div className="comments-section">
+    <h3>Comments</h3>
+    {
+        comments.length === 0 ? (
+            <p>No Comments Yet</p>
+        ) : (
+            comments.map((comment) => (
+                <div key={comment._id}>
+                    <h4>{comment.owner.username}</h4>
+                    <p>{comment.content}</p>
+                </div>
+            ))
+        )
+    }
 </div>
 
 
@@ -118,6 +136,7 @@ return (
         </div>
     ))}
 </div>
+
 </div>
 
 </Layout>
