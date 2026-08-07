@@ -8,3 +8,14 @@ export const getVideoComments = async (videoId) => {
 
     return response.data;
 };
+
+export const addComment = async (videoId, content) => {
+
+    const response = await api.post(
+        `/comment/comment/${videoId}`,
+        {
+            content: content
+        }
+    );
+    return response.data;
+};

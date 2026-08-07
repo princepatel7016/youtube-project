@@ -4,7 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import { getVideoById, getAllVideos } from "../../services/videoApi";
 import "./Watch.css";
 import { useNavigate } from "react-router-dom";
-import { getVideoComments } from "../../services/commentApi";
+import { getVideoComments , addComment } from "../../services/commentApi";
 
 function Watch() {
 
@@ -14,11 +14,13 @@ const navigate = useNavigate();
 const [video, setVideo] = useState(null);
 const [suggestedVideos, setSuggestedVideos] = useState([]);
 const [comments, setComments] = useState([]);
+const [commentText, setCommentText] = useState("");
 
 useEffect(() => {
     fetchVideo();
     fetchSuggestedVideos();
     fetchComments();
+    handleAddComment();
 }, [videoId]);
 
     async function fetchVideo() {
@@ -61,6 +63,20 @@ async function fetchComments() {
     }
 }
 
+async function handleAddComment() {
+    if (!commentText.trim()) {
+        return;
+    }
+    try {
+        const res = await addComment(videoId, commentText);
+        console.log("Add comment response:", res);
+        setCommentText("");
+        fetchComments();
+    } catch (error) {
+        console.log("Add comment error:", error);
+    }
+}
+
 return (
 <Layout>
 
@@ -92,25 +108,38 @@ return (
     <div className="description-box">
         <p>{video.description}</p>
     </div>
-    
-</div>
 
-
-<div className="comments-section">
+    <div className="comments-section">
     <h3>Comments</h3>
+    <div className="comment-input">
+        <input
+            type="text"
+            placeholder="Write a comment..."
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+        />
+        <button onClick={handleAddComment}>
+            Add Comment
+        </button>
+    </div>
     {
         comments.length === 0 ? (
             <p>No Comments Yet</p>
         ) : (
             comments.map((comment) => (
-                <div key={comment._id}>
+                <div key={comment._id} className="comment">
                     <h4>{comment.owner.username}</h4>
                     <p>{comment.content}</p>
                 </div>
             ))
         )
     }
+
+    </div>
+
+
 </div>
+
 
 
 <div className="watch-right">
