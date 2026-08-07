@@ -9,7 +9,7 @@ const getVideocomment = asynchandler( async (req,res)=>{
 
     const {page=1 , limit=10 } = req.query
 
-    if (!isValidObjectId(videoId)) {
+    if (!videoId) {
     throw new ApiError(400, "Invalid video id");
 }
 

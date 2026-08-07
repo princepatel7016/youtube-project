@@ -3,7 +3,7 @@ import React from 'react'
 const Register = () => {
   return (
     <div>
-        <h1>REGISTER PAGE</h1>
+      <h1>register</h1>
     </div>
   )
 }
