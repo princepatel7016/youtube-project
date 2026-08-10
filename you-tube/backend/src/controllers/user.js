@@ -167,10 +167,12 @@ const {accesstoken , refreshToken} = await genrateaccessandrefreshtoken(user._id
 const loggedinuser = await User.findById(user._id).select("-password -refreshToken")
 
 const options = {
-    //cokkie modified only server not fronted
-    httpOnly: true,   
-    secure: false,
-    
+    // cookie modified only server not fronted
+    httpOnly: true,
+    // Use secure cookies in production (requires HTTPS)
+    secure: process.env.NODE_ENV === 'production',
+    // For cross-site requests (frontend on different origin) set SameSite=None in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
 }
 
 return res
@@ -204,7 +206,8 @@ const logoutuser = asynchandler(async (req,res)=>{
     )
     const options = {
     httpOnly: true,    //Browser ka JavaScript cookie ko access nahi kar sakta.
-    secure: false
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
 }
 
 return res.status(200).clearCookie("accesstoken", options)  
@@ -243,8 +246,8 @@ try {
     
     const options = {
         httpOnly:true,
-        //secure:true    //Cookie sirf HTTPS connection par hi browser bhejega.
-        secure: false
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
     
     const {accesstoken, newrefreshToken} = await genrateaccessandrefreshtoken(user._id)

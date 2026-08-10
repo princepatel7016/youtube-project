@@ -9,6 +9,13 @@ try {
         const headerAuth = req.get?.("Authorization") || req.headers?.authorization;
         const tokenFromHeader = headerAuth?.replace(/^Bearer\s+/i, "");
         const token = req.cookies?.accesstoken || tokenFromHeader;
+
+        // Debugging info in development to inspect incoming auth
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[verifyjwt] headerAuth:', headerAuth);
+            console.log('[verifyjwt] tokenFromHeader:', tokenFromHeader);
+            console.log('[verifyjwt] cookie accesstoken present:', !!req.cookies?.accesstoken);
+        }
     
         if(!token){
         throw new ApiError(401 , "unauthorized request")
