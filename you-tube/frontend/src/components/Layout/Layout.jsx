@@ -1,35 +1,41 @@
+import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar.jsx";
 import Sidebar from "../Sidebar/Sidebar.jsx";
+import UploadModal from "../UploadModal/UploadModal.jsx";
 
-function Layout({ children }) {
-return (
-    <>
-    <Navbar />
+function Layout({ children, onSearch, onUploadSuccess }) {
+    const [isUploadOpen, setIsUploadOpen] = useState(false);
 
-    <div
-        style={{
-            display: "flex",
-        }}
-    >
+    return (
+        <>
+            <Navbar
+                onSearch={onSearch}
+                onOpenUpload={() => setIsUploadOpen(true)}
+            />
 
-    <Sidebar />
+            <div style={{ display: "flex", minHeight: "calc(100vh - 60px)" }}>
+                <Sidebar onOpenUpload={() => setIsUploadOpen(true)} />
 
-    <div
-        style={{
-        flex: 1,             //"Sidebar ke baad jitni bhi jagah bachi hai, wo mujhe de do."
-        padding: "20px",
-        }}
-        >
-        {children}
-        </div>
-    </div>
-    </>
-  );
+                <div
+                    style={{
+                        flex: 1,
+                        padding: "20px",
+                        backgroundColor: "#0f0f0f",
+                        color: "#fff",
+                        overflowY: "auto",
+                    }}
+                >
+                    {children}
+                </div>
+            </div>
+
+            <UploadModal
+                isOpen={isUploadOpen}
+                onClose={() => setIsUploadOpen(false)}
+                onUploadSuccess={onUploadSuccess}
+            />
+        </>
+    );
 }
 
 export default Layout;
-
-// Navbar same rahega.
-// Sidebar same rahega.
-// Sirf children badlega (Home, About, Profile, VideoPage, etc.).
-//Isliye har page me Navbar dobara nahi likhna padta.

@@ -250,15 +250,15 @@ try {
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
     
-    const {accesstoken, newrefreshToken} = await genrateaccessandrefreshtoken(user._id)
+    const {accesstoken, refreshToken} = await genrateaccessandrefreshtoken(user._id)
     
     return res.status(200)
     .cookie("accesstoken",accesstoken,options)
-    .cookie("refreshToken",newrefreshToken,options)
+    .cookie("refreshToken",refreshToken,options)
     .json(
         new ApiResponse(
             200,
-            {accesstoken , refreshToken:newrefreshToken},
+            {accesstoken , refreshToken},
             "access token refreshed"
         )
     )
@@ -276,7 +276,7 @@ const changecoorentpassword = asynchandler(async (req,res) =>{
 
     const user = await User.findById(req.user?._id)
 
-    const isPasswordCorrect = user.isPasswordCorrect(oldpassword)
+    const isPasswordCorrect = await user.isPasswordCorrect(oldpassword)
 
     if(!isPasswordCorrect){
         throw new ApiError(400,"invalid oldpassword")
@@ -311,7 +311,7 @@ const updateaccountdetails = asynchandler(async (req,res) => {
         req.user?._id,
         {
             $set:{
-                fullname: fullName,
+                fullName: fullName,
                 username: username
             }
         },

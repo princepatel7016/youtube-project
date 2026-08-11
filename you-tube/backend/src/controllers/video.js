@@ -42,7 +42,7 @@ const videoupload = asynchandler(async (req,res) => {
         throw new ApiError(400, "thumnail file id requird")
     }
 
-    const user = await Video.create({
+    const videoDoc = await Video.create({
         title,
         description,
         videofile: video.url,
@@ -52,7 +52,7 @@ const videoupload = asynchandler(async (req,res) => {
     })
 
     return res.status(201).json(
-        new ApiResponse(201, user, "user video upload successfully")
+        new ApiResponse(201, videoDoc, "user video upload successfully")
     )
 })
 
@@ -64,8 +64,8 @@ const getAllvideo = asynchandler(async (req,res) =>{
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
 
-    if(pageNumber<1 || limitNumber<10){
-        throw new ApiError(400,"inavalid page and")
+    if(pageNumber<1 || limitNumber<1){
+        throw new ApiError(400,"invalid page and limit")
     }
 
     const skip =(pageNumber-1) * limitNumber;

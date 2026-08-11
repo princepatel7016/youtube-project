@@ -1,37 +1,50 @@
-.sidebar{
-    width:220px;
-    height:calc(100vh - 60px);
-
-    background:#181818;
-
-    color:white;
-
-    position:sticky;   /* Scroll karne par sidebar side me hi rahega.*/
-
-    top:60px;
-
-    overflow-y:auto;
+.sidebar {
+  width: 230px;
+  height: calc(100vh - 60px);
+  background: #0f0f0f;
+  color: white;
+  position: sticky;
+  top: 60px;
+  overflow-y: auto;
+  border-right: 1px solid #272727;
+  padding-top: 8px;
 }
 
-.sidebar-menu{
-    display:flex;
-
-    flex-direction:column;
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar-item{
-
-    padding:15px 20px;
-
-    cursor:pointer;
-
-    transition:0.3s;
-
-    font-size:16px;
+.sidebar-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 10px;
+  margin: 2px 10px;
 }
 
-.sidebar-item:hover{
+.sidebar-item:hover {
+  background: #272727;
+}
 
-    background:#303030;
+.sidebar-item.active {
+  background: #272727;
+  font-weight: 600;
+}
 
+.sidebar-item.upload-item {
+  margin-top: 16px;
+  background: rgba(204, 0, 0, 0.15);
+  color: #ff4d4d;
+  border: 1px solid rgba(204, 0, 0, 0.3);
+}
+
+.sidebar-item.upload-item:hover {
+  background: rgba(204, 0, 0, 0.3);
 }

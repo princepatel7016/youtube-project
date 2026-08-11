@@ -16,7 +16,7 @@ const getVideocomment = asynchandler( async (req,res)=>{
     const pageNumber = Number(page)
     const limitNumber = Number(limit)
 
-    if(pageNumber<1 || limitNumber<10){
+    if(pageNumber<1 || limitNumber<1){
         throw new ApiError(400,"invalid number page and limit")
     }
 
@@ -54,6 +54,7 @@ const getVideocomment = asynchandler( async (req,res)=>{
             $project: {
                 content: 1,
                 createdAt: 1,
+                "owner._id": 1,
                 "owner.username": 1,
                 "owner.avatar": 1
             }
@@ -121,17 +122,21 @@ const updateComment = asynchandler(async (req,res)=>{
 const deleteComment = asynchandler(async (req,res)=>{
     const {commentId} = req.params
 
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+        throw new ApiError(404, "comment not found");
+    }
 
-    const deleteComment = await Comment.findByIdAndDelete(
+    if (comment.owner.toString() !== req.user._id.toString()) {
+        throw new ApiError(403, "You can only delete your own comment");
+    }
+
+    const deleteCommentDoc = await Comment.findByIdAndDelete(
         commentId
     )
 
-    if(!deleteComment){
-        throw new ApiError(400,"comment not found")
-    }
-
     return res.status(200).json(
-        new ApiResponse(200,deleteComment,"delete comment succfully")
+        new ApiResponse(200,deleteCommentDoc,"delete comment succfully")
     )
 
 })

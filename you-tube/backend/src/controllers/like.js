@@ -1,4 +1,4 @@
-import  Mongoose ,  {isValidObjectId} from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -53,7 +53,7 @@ const togglecommentlike = asynchandler(async(req,res)=>{
     // Check if already liked
     const alreadyLiked = await Like.findOne({
         comment: commentId,
-        likedBy: req.user._id
+        likedby: req.user._id
     });
 
     // Unlike
@@ -69,7 +69,7 @@ const togglecommentlike = asynchandler(async(req,res)=>{
     // Like
     await Like.create({
         comment: commentId,
-        likedBy: req.user._id
+        likedby: req.user._id
     });
 
     return res.status(200).json(
@@ -96,7 +96,7 @@ const toggletweetlike = asynchandler(async(req,res)=>{
     // 3. Check if already liked
     const alreadyLiked = await Like.findOne({
         tweet: tweetId,
-        likedBy: req.user._id,
+        likedby: req.user._id,
     });
 
     // 4. If liked then remove like
@@ -111,7 +111,7 @@ const toggletweetlike = asynchandler(async(req,res)=>{
     // 5. Otherwise create like
     await Like.create({
         tweet: tweetId,
-        likedBy: req.user._id,
+        likedby: req.user._id,
     });
 
     return res.status(200).json(
@@ -125,7 +125,7 @@ const getlikevideos = asynchandler(async(req,res)=>{
     const likedVideos = await Like.aggregate([
         {
             $match:{
-                likedBy:req.user._id,
+                likedby: new mongoose.Types.ObjectId(req.user._id),
                 video: { $exists: true }
             }
         },

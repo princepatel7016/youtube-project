@@ -1,69 +1,156 @@
-.navbar{
-    height:60px;
-    background:#202020;
-    color:white;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 20px;
-
-    position:sticky;  /* Scroll karne par Navbar upar hi rahega.*/
-    top:0;
-
-    z-index:1000;
+.navbar {
+  height: 60px;
+  background: #0f0f0f;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #272727;
 }
 
-.navbar-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
-.logo{
-    font-size:24px;
-    font-weight:bold;
+.logo-link {
+  text-decoration: none;
+  color: white;
 }
 
-.navbar-center{
-    display:flex;
-    align-items:center;
-
-    width:45%;
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.search-input{
-    flex:1;
-
-    height:38px;
-
-    outline:none;
-
-    border:1px solid gray;
-
-    padding-left:15px;
-
-    font-size:16px;
+.youtube-badge {
+  color: #ff0000;
+  font-size: 22px;
 }
 
-.search-btn{
-    height:40px;
-
-    width:80px;
-
-    cursor:pointer;
+.navbar-center {
+  display: flex;
+  align-items: center;
+  width: 45%;
+  max-width: 600px;
 }
 
-.navbar-right{
-    display:flex;
-    align-items:center;
-
-    gap:15px;
+.search-input {
+  flex: 1;
+  height: 40px;
+  outline: none;
+  background: #121212;
+  border: 1px solid #303030;
+  border-radius: 40px 0 0 40px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #fff;
 }
 
-.icon{
-    cursor:pointer;
+.search-input:focus {
+  border-color: #1c62b9;
+}
 
-    font-size:18px;
+.search-btn {
+  height: 40px;
+  width: 64px;
+  background: #222222;
+  border: 1px solid #303030;
+  border-left: none;
+  border-radius: 0 40px 40px 0;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn:hover {
+  background: #303030;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-nav-btn {
+  background: #272727;
+  color: #fff;
+  border: 1px solid #3f3f3f;
+  padding: 7px 14px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.upload-nav-btn:hover {
+  background: #3f3f3f;
+}
+
+.user-profile-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #444;
+}
+
+.username-display {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e1e1e1;
+}
+
+.logout-btn {
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.logout-btn:hover {
+  color: #fff;
+  border-color: #cc0000;
+  background: rgba(204, 0, 0, 0.2);
+}
+
+.signin-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #3ea6ff;
+  color: #3ea6ff;
+  padding: 6px 14px;
+  border-radius: 18px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.signin-nav-btn:hover {
+  background: rgba(62, 166, 255, 0.15);
 }

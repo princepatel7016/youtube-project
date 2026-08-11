@@ -1,9 +1,24 @@
-.home-container{
-    display:grid;
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
 
-    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+.home-header h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
 
-    gap:25px;
+.video-count {
+  font-size: 0.9rem;
+  color: #aaa;
+}
 
-    padding:20px;
+.home-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }

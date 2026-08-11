@@ -18,7 +18,7 @@ const userschema = new Schema(
             type: String,
             required: true,
             unique: true,
-            lowecase: true,
+            lowercase: true,
             trim : true,
         },
         fullName:{
@@ -37,7 +37,7 @@ const userschema = new Schema(
         watchHistory: [
             {
                 type:Schema.Types.ObjectId,
-                ref: "video"
+                ref: "Video"
             }
         ],
         password:{
@@ -50,7 +50,7 @@ const userschema = new Schema(
 
     },
     {
-        timestaamps: true
+        timestamps: true
     }
 )
 
