@@ -276,3 +276,90 @@
   text-align: center;
   font-weight: 500;
 }
+
+/* Subscriber Stats Badges */
+.profile-stats-badges {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  color: #f1f1f1;
+  font-weight: 600;
+}
+
+.stat-badge span {
+  color: #3ea6ff;
+  font-weight: 700;
+}
+
+/* Subscribed Channels List */
+.subscribed-channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.subscribed-channel-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 14px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.subscribed-channel-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #1a1a1a;
+}
+
+.channel-card-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.channel-card-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.channel-card-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f1f1f1;
+}
+
+.unsubscribe-icon-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #aaa;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.unsubscribe-icon-btn:hover {
+  background: rgba(255, 78, 78, 0.2);
+  color: #ff4e4e;
+}
+

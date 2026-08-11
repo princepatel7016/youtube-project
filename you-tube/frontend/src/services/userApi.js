@@ -51,3 +51,14 @@ export const changePassword = async (passwordData) => {
     const response = await api.post("/users/change-password", passwordData);
     return response.data;
 };
+
+export const getUserChannelProfile = async (username) => {
+    const response = await api.get(`/users/c/${username}`);
+    return response.data;
+};
+
+export const getWatchHistory = async () => {
+    const response = await api.get("/users/history");
+    return response.data;
+};
+

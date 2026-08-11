@@ -1,0 +1,141 @@
+.subscriptions-page {
+  padding: 10px 0 40px 0;
+}
+
+.subs-header {
+  margin-bottom: 16px;
+}
+
+.subs-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #f1f1f1;
+  margin: 0;
+}
+
+/* Horizontal Subscribed Channels Bar */
+.subs-channels-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.subs-channels-bar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.subs-channels-bar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+.subs-channel-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #f1f1f1;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.subs-channel-chip:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.subs-channel-chip.active {
+  background-color: #f1f1f1;
+  color: #0f0f0f;
+  border-color: #f1f1f1;
+  font-weight: 600;
+}
+
+.all-channels-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.subs-chip-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.subs-chip-placeholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Empty State */
+.subs-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: #181818;
+  border-radius: 16px;
+  border: 1px solid #272727;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.subs-empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f1f1;
+  margin-bottom: 8px;
+}
+
+.subs-empty-state p {
+  color: #aaa;
+  font-size: 0.925rem;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.explore-btn {
+  background: #3ea6ff;
+  color: #0f0f0f;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.explore-btn:hover {
+  background: #65b8ff;
+}

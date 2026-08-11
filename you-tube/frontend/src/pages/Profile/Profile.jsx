@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Layout from "../../components/Layout/Layout";
-import { updateAccountDetails, updateUserAvatar, updateUserCoverImage, changePassword } from "../../services/userApi";
+import { updateAccountDetails, updateUserAvatar, updateUserCoverImage, changePassword, getUserChannelProfile } from "../../services/userApi";
+import { getSubscribedChannels, toggleSubscription } from "../../services/subscriptionApi";
 import "../Login/Login.css";
 import "./Profile.css";
 
@@ -12,6 +13,10 @@ const Profile = () => {
     const [username, setUsername] = useState("");
     const [avatarFile, setAvatarFile] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
+
+    // Subscription & Channel Profile State
+    const [profileStats, setProfileStats] = useState(null);
+    const [subscribedChannels, setSubscribedChannels] = useState([]);
 
     // Password State
     const [oldPassword, setOldPassword] = useState("");
@@ -47,8 +52,46 @@ const Profile = () => {
         if (user) {
             setFullName(user.fullName || "");
             setUsername(user.username || "");
+            if (user.username) {
+                fetchProfileStats();
+            }
+            if (user._id) {
+                fetchUserSubscriptions();
+            }
         }
     }, [user]);
+
+    async function fetchProfileStats() {
+        try {
+            const res = await getUserChannelProfile(user.username);
+            if (res && res.data) {
+                setProfileStats(res.data);
+            }
+        } catch (err) {
+            console.error("Error fetching channel stats:", err);
+        }
+    }
+
+    async function fetchUserSubscriptions() {
+        try {
+            const res = await getSubscribedChannels(user._id);
+            if (res && res.data) {
+                setSubscribedChannels(res.data);
+            }
+        } catch (err) {
+            console.error("Error fetching subscriptions:", err);
+        }
+    }
+
+    async function handleUnsubscribeFromList(channelId) {
+        try {
+            await toggleSubscription(channelId);
+            fetchUserSubscriptions();
+            fetchProfileStats();
+        } catch (err) {
+            console.error("Error unsubscribing channel:", err);
+        }
+    }
 
     if (!user) {
         return (
@@ -241,6 +284,17 @@ const Profile = () => {
                             </h2>
                             <span className="user-handle">@{user.username}</span>
                             <span className="user-email-badge">✉️ {user.email}</span>
+
+                            {profileStats && (
+                                <div className="profile-stats-badges">
+                                    <div className="stat-badge">
+                                        👥 Subscribers: <span>{profileStats.subscriberscount || 0}</span>
+                                    </div>
+                                    <div className="stat-badge">
+                                        📺 Subscribed To: <span>{profileStats.channelsubscribedtocount || 0}</span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -402,6 +456,45 @@ const Profile = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Card 4: Subscribed Channels List */}
+                    <div className="profile-card" style={{ gridColumn: "1 / -1" }}>
+                        <h3>📺 Subscribed Channels ({subscribedChannels.length})</h3>
+
+                        {subscribedChannels.length === 0 ? (
+                            <p style={{ color: "#aaa", fontSize: "0.9rem", marginTop: "8px" }}>
+                                You haven't subscribed to any channels yet.
+                            </p>
+                        ) : (
+                            <div className="subscribed-channels-grid">
+                                {subscribedChannels.map((item) => (
+                                    <div key={item.channel?._id || Math.random()} className="subscribed-channel-card">
+                                        <div className="channel-card-info">
+                                            {item.channel?.avatar ? (
+                                                <img
+                                                    src={item.channel.avatar}
+                                                    alt={item.channel.username}
+                                                    className="channel-card-avatar"
+                                                />
+                                            ) : (
+                                                <div className="comment-user-placeholder">
+                                                    {(item.channel?.username || "C")[0].toUpperCase()}
+                                                </div>
+                                            )}
+                                            <span className="channel-card-name">@{item.channel?.username}</span>
+                                        </div>
+                                        <button
+                                            className="unsubscribe-icon-btn"
+                                            onClick={() => handleUnsubscribeFromList(item.channel?._id)}
+                                            title="Unsubscribe channel"
+                                        >
+                                            Subscribed 🔔
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

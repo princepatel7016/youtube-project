@@ -48,3 +48,78 @@
 .sidebar-item.upload-item:hover {
   background: rgba(204, 0, 0, 0.3);
 }
+
+/* Sidebar Subscriptions Section */
+.sidebar-divider {
+  height: 1px;
+  background-color: #272727;
+  margin: 12px 14px;
+}
+
+.sidebar-section-title {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-section-title:hover {
+  color: #fff;
+}
+
+.sidebar-channels-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-channel-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 10px;
+  margin: 2px 10px;
+}
+
+.sidebar-channel-item:hover {
+  background: #272727;
+}
+
+.sidebar-channel-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sidebar-channel-placeholder {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.sidebar-channel-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
