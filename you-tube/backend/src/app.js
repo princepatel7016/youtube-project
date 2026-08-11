@@ -24,7 +24,8 @@ import playlistRouter from "./routes/playlist.routes.js"
 import tweetRouter from "./routes/tweet.routes.js"
 import likeRouter from "./routes/like.routes.js"
 import DashbordRouter from "./routes/dashbord.routes.js"
-import errorHandler from "./middleware/error.middleware.js"
+import SubscriptionRouter from "./routes/subscription.routes.js"
+// import errorHandler from "./middleware/error.middleware.js"
 
 
 app.use("/api/v1/users",useRouter)
@@ -34,10 +35,11 @@ app.use("/api/v1/playlist",playlistRouter)
 app.use("/api/v1/Tweet",tweetRouter)
 app.use("/api/v1/Like",likeRouter)
 app.use("/api/v1/Dashbord",DashbordRouter)
+app.use("/api/v1/Subsctiption",SubscriptionRouter)
+
 
 // Register global error handler (must come after routes)
-app.use(errorHandler)
-
+// app.use(errorHandler)
 
 //  http://localhost:8000/api/v1/users/register
 
