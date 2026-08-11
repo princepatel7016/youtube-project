@@ -129,19 +129,79 @@
   align-items: center;
 }
 
-.delete-comment-btn {
+.comment-action-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.action-icon-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 0.95rem;
-  opacity: 0.6;
+  font-size: 0.9rem;
+  opacity: 0.7;
   transition: opacity 0.2s ease, transform 0.2s ease;
   padding: 2px 6px;
+  border-radius: 4px;
 }
 
-.delete-comment-btn:hover {
+.action-icon-btn:hover {
   opacity: 1;
   transform: scale(1.15);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.edit-comment-container {
+  margin-top: 8px;
+  margin-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-comment-input {
+  background: #121212;
+  border: 1px solid #3ea6ff;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.edit-comment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-edit-btn {
+  background: #3ea6ff;
+  color: #0f0f0f;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-edit-btn:hover {
+  background: #65b8ff;
+}
+
+.cancel-edit-btn {
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.cancel-edit-btn:hover {
+  color: #fff;
+  border-color: #666;
 }
 
 .suggested-title {
