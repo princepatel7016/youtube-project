@@ -47,12 +47,16 @@ function Navbar({ onSearch, onOpenUpload }) {
                         <button className="upload-nav-btn" onClick={onOpenUpload} title="Upload Video">
                             + Upload
                         </button>
-                        <div className="user-profile-menu">
+                        <div
+                            className="user-profile-menu"
+                            onClick={() => navigate("/profile")}
+                            style={{ cursor: "pointer" }}
+                            title="View & Edit Account Profile"
+                        >
                             <img
                                 src={user.avatar}
                                 alt={user.username}
                                 className="user-avatar-img"
-                                title={user.fullName || user.username}
                             />
                             <span className="username-display">{user.username}</span>
                         </div>

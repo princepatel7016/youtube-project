@@ -7,6 +7,7 @@ import "./Login.css";
 const Login = () => {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -63,14 +64,24 @@ const Login = () => {
 
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                placeholder="Enter password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                            <div className="password-input-wrapper">
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Enter password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle-btn"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    title={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? "👁️‍🗨️" : "👁️"}
+                                </button>
+                            </div>
                         </div>
 
                         <button type="submit" className="auth-btn" disabled={loading}>

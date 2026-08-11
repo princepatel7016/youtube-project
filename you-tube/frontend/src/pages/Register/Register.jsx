@@ -9,6 +9,7 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [avatar, setAvatar] = useState(null);
     const [coverImage, setCoverImage] = useState(null);
     const [error, setError] = useState("");
@@ -101,14 +102,24 @@ const Register = () => {
 
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                placeholder="Create a password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                            <div className="password-input-wrapper">
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Create a password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle-btn"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    title={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? "👁️‍🗨️" : "👁️"}
+                                </button>
+                            </div>
                         </div>
 
                         <div className="form-group">

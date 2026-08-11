@@ -50,6 +50,16 @@ function Sidebar({ onOpenUpload }) {
                 </div>
 
                 <div
+                    className={`sidebar-item ${location.pathname === "/profile" ? "active" : ""}`}
+                    onClick={() => {
+                        if (!user) navigate("/login");
+                        else navigate("/profile");
+                    }}
+                >
+                    👤 My Profile
+                </div>
+
+                <div
                     className="sidebar-item"
                     onClick={() => {
                         if (!user) navigate("/login");

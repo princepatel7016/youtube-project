@@ -23,3 +23,31 @@ export const getCurrentUser = async () => {
     const response = await api.get("/users/current-user");
     return response.data;
 };
+
+export const updateAccountDetails = async (details) => {
+    const response = await api.patch("/users/update-account", details);
+    return response.data;
+};
+
+export const updateUserAvatar = async (formData) => {
+    const response = await api.patch("/users/avatar", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+    return response.data;
+};
+
+export const updateUserCoverImage = async (formData) => {
+    const response = await api.patch("/users/cover-image", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+    return response.data;
+};
+
+export const changePassword = async (passwordData) => {
+    const response = await api.post("/users/change-password", passwordData);
+    return response.data;
+};
