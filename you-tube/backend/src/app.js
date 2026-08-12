@@ -38,8 +38,6 @@ app.use("/api/v1/Dashbord",DashbordRouter)
 app.use("/api/v1/Subsctiption",SubscriptionRouter)
 
 
-// Register global error handler (must come after routes)
-// app.use(errorHandler)
 
 //  http://localhost:8000/api/v1/users/register
 
