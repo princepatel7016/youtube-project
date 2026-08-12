@@ -15,3 +15,9 @@ export const toggleCommentLike = async (commentId) => {
     return response.data;
 };
 
+export const toggleTweetLike = async (tweetId) => {
+    const response = await api.post(`/Like/toggletweetlike/v/${tweetId}`);
+    return response.data;
+};
+
+

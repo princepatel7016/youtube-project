@@ -70,6 +70,17 @@ function Sidebar({ onOpenUpload }) {
                 </div>
 
                 <div
+                    className={`sidebar-item ${location.pathname === "/tweets" ? "active" : ""}`}
+                    onClick={() => {
+                        if (!user) navigate("/login");
+                        else navigate("/tweets");
+                    }}
+                >
+                    🐦 Tweets
+                </div>
+
+
+                <div
                     className={`sidebar-item ${location.pathname === "/profile" ? "active" : ""}`}
                     onClick={() => {
                         if (!user) navigate("/login");

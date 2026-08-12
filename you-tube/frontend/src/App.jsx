@@ -9,6 +9,7 @@ import Watch from "./pages/Watch/Watch.jsx";
 import Subscriptions from "./pages/Subscriptions/Subscriptions.jsx";
 import Playlists from "./pages/Playlists/Playlists.jsx";
 import History from "./pages/History/History.jsx";
+import Tweets from "./pages/Tweets/Tweets.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 
 const App = () => {
@@ -20,11 +21,13 @@ const App = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/subscriptions" element={<Subscriptions />} />
       <Route path="/playlists" element={<Playlists />} />
+      <Route path="/tweets" element={<Tweets />} />
       <Route path="/history" element={<History />} />
       <Route path="/watch/:videoId" element={<Watch />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
+
 
 export default App;
