@@ -79,6 +79,15 @@ function Sidebar({ onOpenUpload }) {
                     🐦 Tweets
                 </div>
 
+                <div
+                    className={`sidebar-item ${location.pathname === "/dashboard" ? "active" : ""}`}
+                    onClick={() => {
+                        if (!user) navigate("/login");
+                        else navigate("/dashboard");
+                    }}
+                >
+                    📊 Dashboard
+                </div>
 
                 <div
                     className={`sidebar-item ${location.pathname === "/profile" ? "active" : ""}`}
@@ -89,6 +98,7 @@ function Sidebar({ onOpenUpload }) {
                 >
                     👤 My Profile
                 </div>
+
 
                 <div
                     className="sidebar-item upload-item"
